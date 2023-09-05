@@ -2,7 +2,7 @@ FROM ubuntu:bionic-20190612
 LABEL maintainer="sameer@damagehead.com"
 
 ENV PHP_VERSION=7.2 \
-    INVOICEPLANE_VERSION=1.5.9 \
+    INVOICEPLANE_VERSION=1.6.0 \
     INVOICEPLANE_USER=www-data \
     INVOICEPLANE_INSTALL_DIR=/var/www/invoiceplane \
     INVOICEPLANE_DATA_DIR=/var/lib/invoiceplane \
@@ -17,7 +17,7 @@ RUN apt-get update \
       php${PHP_VERSION}-gd php${PHP_VERSION}-json php${PHP_VERSION}-mbstring \
       php${PHP_VERSION}-recode php${PHP_VERSION}-xmlrpc \
       mysql-client nginx gettext-base git \
- && sed -i 's/^listen = .*/listen = 0.0.0.0:9000/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf \
+ && sed -i 's/^listen = .*/listen = 0.0.0.0:6000/' /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf \
  && rm -rf /var/lib/apt/lists/*
 
 COPY assets/build/ ${INVOICEPLANE_BUILD_DIR}/
@@ -38,4 +38,4 @@ ENTRYPOINT ["/sbin/entrypoint.sh"]
 
 CMD ["app:invoiceplane"]
 
-EXPOSE 80/tcp 9000/tcp
+EXPOSE 80/tcp 6000/tcp
