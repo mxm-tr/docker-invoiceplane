@@ -1,4 +1,6 @@
-<?php exit('No direct script access allowed'); ?>
+# comment out the default exception in ipconfig.php
+# https://wiki.invoiceplane.com/en/1.6/getting-started/updating-ip#160-2-replace-files
+#<?php exit('No direct script access allowed'); ?>
 # InvoicePlane Configuration File
 
 # Set your URL without trailing slash here, e.g. http://your-domain.com

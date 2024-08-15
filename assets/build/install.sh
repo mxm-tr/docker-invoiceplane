@@ -36,3 +36,7 @@ chown root:${INVOICEPLANE_USER} ${INVOICEPLANE_INSTALL_DIR}/.user.ini
 chmod 0644 ${INVOICEPLANE_INSTALL_DIR}/.user.ini
 chmod 0660 ${INVOICEPLANE_INSTALL_DIR}/ipconfig.php
 chmod 1777 ${INVOICEPLANE_INSTALL_DIR}/vendor/mpdf/mpdf/tmp/
+
+# comment out the default exception in ipconfig.php
+# https://wiki.invoiceplane.com/en/1.6/getting-started/updating-ip#160-2-replace-files
+sed 's/<?php exit(/#<\?php exit(/' -i ${INVOICEPLANE_INSTALL_DIR}/ipconfig.php

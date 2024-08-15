@@ -166,9 +166,9 @@ invoiceplane_check_database_connection() {
 
 invoiceplane_finalize_php_fpm_parameters() {
   # is a invoiceplane-php-fpm container linked?
-  if [[ -n ${PHP_FPM_PORT_9000_TCP_ADDR} ]]; then
-    INVOICEPLANE_PHP_FPM_HOST=${INVOICEPLANE_PHP_FPM_HOST:-$PHP_FPM_PORT_9000_TCP_ADDR}
-    INVOICEPLANE_PHP_FPM_PORT=${INVOICEPLANE_PHP_FPM_PORT:-$PHP_FPM_PORT_9000_TCP_PORT}
+  if [[ -n ${PHP_FPM_PORT_6000_TCP_ADDR} ]]; then
+    INVOICEPLANE_PHP_FPM_HOST=${INVOICEPLANE_PHP_FPM_HOST:-$PHP_FPM_PORT_6000_TCP_ADDR}
+    INVOICEPLANE_PHP_FPM_PORT=${INVOICEPLANE_PHP_FPM_PORT:-$PHP_FPM_PORT_6000_TCP_PORT}
   fi
 
   if [[ -z ${INVOICEPLANE_PHP_FPM_HOST} ]]; then
@@ -180,7 +180,7 @@ invoiceplane_finalize_php_fpm_parameters() {
   fi
 
   # use default php-fpm port number if it is still not set
-  INVOICEPLANE_PHP_FPM_PORT=${INVOICEPLANE_PHP_FPM_PORT:-9000}
+  INVOICEPLANE_PHP_FPM_PORT=${INVOICEPLANE_PHP_FPM_PORT:-6000}
 }
 
 invoiceplane_configure_debugging() {
@@ -210,6 +210,7 @@ invoiceplane_configure_database() {
   invoiceplane_set_param "DB_USERNAME" "${DB_USER}"
   invoiceplane_set_param "DB_PASSWORD" "${DB_PASS}" "true"
   invoiceplane_set_param "DB_DATABASE" "${DB_NAME}"
+  invoiceplane_set_param "DISABLE_SETUP" "${DISABLE_SETUP}"
 }
 
 invoiceplane_configure_timezone() {
@@ -387,6 +388,10 @@ install_configuration_templates() {
     install_template root: nginx/InvoicePlane.conf ${INVOICEPLANE_NGINX_CONFIG} 0644
     update_template ${INVOICEPLANE_NGINX_CONFIG} INVOICEPLANE_INSTALL_DIR
   fi
+
+  # comment out the default exception in ipconfig.php
+  # https://wiki.invoiceplane.com/en/1.6/getting-started/updating-ip#160-2-replace-files
+  sed 's/<?php exit(/#<\?php exit(/' -i ${INVOICEPLANE_CONFIG}
 }
 
 initialize_system() {
